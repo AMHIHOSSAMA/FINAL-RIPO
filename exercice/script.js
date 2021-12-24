@@ -15,7 +15,6 @@ var formes = [];
 
 
 
-
 //CLASS
 class Books {
     constructor(title, author, price, date, email, petSelect, bookType) {
@@ -38,7 +37,9 @@ class Books {
         const priceValue = price.value.trim();
         const dateValue = date.value.trim();
         const petSelectValue = petSelect.value.trim();
-
+        const emailValue = email.value.trim();
+        
+        
         if (titleValue === '') {
             setErrorFor(title, 'le titre ne peu etre pas vide');
             error++;
@@ -99,6 +100,16 @@ class Books {
             setSuccessFor(petSelect);
         }
 
+        if(emailValue === '') {
+            setErrorFor(email, 'Email cannot be blank');
+            error++;
+        } else if (!isEmail(emailValue)) {
+            setErrorFor(email, 'Not a valid email');
+            error++;
+        } else {
+            setSuccessFor(email);
+        }
+
         //ERROR MESSAGE FORM
         function setErrorFor(input, message) {
             const formControl = input.parentElement;
@@ -145,6 +156,7 @@ class Books {
         // localStorage.setItem(title.value,author.value,price.value,date.value,email.value,petSelect.value,types.value)
         // location.reload()
 
+        
        
     }
        
@@ -157,10 +169,21 @@ form.addEventListener("submit",(e)=>{
     newForms.addData();
 
     
-    localStorage.setItem('Books',JSON.stringify(Books));
-    console.log(localStorage.getItem('Books'))
+    let formData = {
+            title: document.getElementById('title').value,
+            author: document.getElementById('author').value,
+            price: document.getElementById('price').value,
+            date: document.getElementById('date').value,
+            email: document.getElementById('yourEmail').value,
+    }
+    
+   localStorage.setItem('formes',JSON.stringify(formes));
+    localStorage.getItem('formes');
     
 })
 
 
 
+function isEmail(email) {
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
